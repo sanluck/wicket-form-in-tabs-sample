@@ -1,9 +1,9 @@
 package org.dcak.sample;
 
-import java.awt.image.SampleModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,12 +15,15 @@ import org.apache.wicket.extensions.markup.html.repeater.tree.content.Folder;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 import org.dcak.sample.bean.SampleBean;
 import org.dcak.sample.panel.EditSampleBeanPanel;
 
@@ -95,6 +98,8 @@ public class HomePage extends WebPage {
                                         sampleModel.setObject(model.getObject());
                                         art.add(HomePage.this.get("stringModelValue"));
                                         art.add(HomePage.this.get("tabs"));
+                                        
+                                        clearInput();
                                     }
                                 };
                             }
@@ -104,5 +109,13 @@ public class HomePage extends WebPage {
                 }.setOutputMarkupId(true));
 
     }
+	
+	private void clearInput()
+	{
+		visitChildren(Form.class, new IVisitor<Form, Void>() {
+			 public void component(Form form, IVisit<Void> visit) {
+				 form.clearInput();
+			 }
+		});
+	}
 }
-
